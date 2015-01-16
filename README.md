@@ -11,6 +11,7 @@ Via environment variables:
 - `KAFKA_ADVERTISED_HOST`
 - `KAFKA_ADVERTISED_PORT`
 - `KAFKA_LOG_CLEANER`
+- `KAFKA_AUTO_CREATE_TOPICS` - default is `true`
 
 # License
 

@@ -5,6 +5,7 @@
 : ${KAFKA_ADVERTISED_HOST}
 : ${KAFKA_ADVERTISED_PORT}
 : ${KAFKA_LOG_CLEANER}
+: ${KAFKA_AUTO_CREATE_TOPICS:=true}
 
 
 if [[ -n ${KAFKA_BROKER_ID} ]]; then
@@ -33,6 +34,7 @@ if [[ -n ${KAFKA_LOG_CLEANER} ]]; then
 fi
 
 sed -e 's|^log.dirs=.*|log.dirs=/data|' -i /srv/kafka/config/server.properties
+echo "auto.create.topics.enable=${KAFKA_AUTO_CREATE_TOPICS}" >> /srv/kafka/config/server.properties
 
 
 if [[ $# -lt 1 ]] || [[ "$1" == "--"* ]]; then

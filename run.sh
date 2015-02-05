@@ -6,6 +6,7 @@
 : ${KAFKA_ADVERTISED_PORT}
 : ${KAFKA_LOG_CLEANER}
 : ${KAFKA_AUTO_CREATE_TOPICS:=true}
+: ${KAFKA_ENABLE_DELETE_TOPICS:=true}
 
 
 if [[ -n ${KAFKA_BROKER_ID} ]]; then
@@ -36,6 +37,7 @@ fi
 sed -e 's|^log.dirs=.*|log.dirs=/data|' -i /srv/kafka/config/server.properties
 echo "auto.create.topics.enable=${KAFKA_AUTO_CREATE_TOPICS}" >> /srv/kafka/config/server.properties
 
+echo "delete.topic.enable=${KAFKA_ENABLE_DELETE_TOPICS}" >> /srv/kafka/config/server.properties
 
 if [[ $# -lt 1 ]] || [[ "$1" == "--"* ]]; then
   exec bin/kafka-server-start.sh config/server.properties "$@"

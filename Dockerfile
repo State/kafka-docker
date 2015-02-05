@@ -6,8 +6,10 @@ RUN yum install -y -q java-headless tar wget; yum clean all
 # Set timezone to UTC until upstream fixes that
 RUN ln -s -f /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
-ENV KAFKA_VERSION 2.10-0.8.1.1
-RUN (cd /tmp; wget -q http://apache.mirror.anlx.net/kafka/0.8.1.1/kafka_${KAFKA_VERSION}.tgz -O - | tar -xzf -; mv kafka_${KAFKA_VERSION} /srv/kafka)
+ENV SCALA_VERSION 2.10
+ENV KAFKA_VERSION 0.8.2.0
+ENV RELEASE_NAME kafka_${SCALA_VERSION}-${KAFKA_VERSION}
+RUN (cd /tmp; wget -q http://apache.mirror.anlx.net/kafka/${KAFKA_VERSION}/${RELEASE_NAME}.tgz -O - | tar -xzf -; mv ${RELEASE_NAME} /srv/kafka)
 
 WORKDIR /srv/kafka
 VOLUME /data

@@ -8,40 +8,40 @@
 : ${KAFKA_AUTO_CREATE_TOPICS:=true}
 : ${KAFKA_ENABLE_DELETE_TOPICS:=true}
 
+KAFKA_CONFIG=/etc/kafka/server.properties
 
 if [[ -n ${KAFKA_BROKER_ID} ]]; then
   sed -e "s/broker.id=.*/broker.id=${KAFKA_BROKER_ID}/" \
-    -i /srv/kafka/config/server.properties
+    -i $KAFKA_CONFIG
 fi
 
 if [[ -n ${KAFKA_ZOOKEEPER_CONNECT} ]]; then
   sed -e "s/^zookeeper.connect=.*/zookeeper.connect=${KAFKA_ZOOKEEPER_CONNECT}/" \
-    -i /srv/kafka/config/server.properties
+    -i $KAFKA_CONFIG
 fi
 
 if [[ -n ${KAFKA_ADVERTISED_HOST} ]]; then
   sed -e "s/^#advertised.host.name=.*/advertised.host.name=${KAFKA_ADVERTISED_HOST}/" \
-    -i /srv/kafka/config/server.properties
+    -i $KAFKA_CONFIG
 fi
 
 if [[ -n ${KAFKA_ADVERTISED_PORT} ]]; then
   sed -e "s/^#advertised.port=.*/advertised.port=${KAFKA_ADVERTISED_PORT}/" \
-    -i /srv/kafka/config/server.properties
+    -i $KAFKA_CONFIG
 fi
 
 if [[ -n ${KAFKA_LOG_CLEANER} ]]; then
   sed -e "s/^log.cleaner.enable=.*/log.cleaner.enable=${KAFKA_LOG_CLEANER}/" \
-    -i /srv/kafka/config/server.properties
+    -i $KAFKA_CONFIG
 fi
 
-sed -e 's|^log.dirs=.*|log.dirs=/data|' -i /srv/kafka/config/server.properties
-echo "auto.create.topics.enable=${KAFKA_AUTO_CREATE_TOPICS}" >> /srv/kafka/config/server.properties
+sed -e 's|^log.dirs=.*|log.dirs=/data|' -i $KAFKA_CONFIG
+echo "auto.create.topics.enable=${KAFKA_AUTO_CREATE_TOPICS}" >> $KAFKA_CONFIG
 
-echo "delete.topic.enable=${KAFKA_ENABLE_DELETE_TOPICS}" >> /srv/kafka/config/server.properties
+echo "delete.topic.enable=${KAFKA_ENABLE_DELETE_TOPICS}" >> $KAFKA_CONFIG
 
 if [[ $# -lt 1 ]] || [[ "$1" == "--"* ]]; then
-  exec bin/kafka-server-start.sh config/server.properties "$@"
+  exec /bin/kafka-server-start $KAFKA_CONFIG "$@"
 fi
 
 exec "$@"
-

@@ -2,6 +2,7 @@
 
 : ${KAFKA_BROKER_ID}
 : ${KAFKA_ZOOKEEPER_CONNECT}
+: ${KAFKA_PORT}
 : ${KAFKA_ADVERTISED_HOST}
 : ${KAFKA_ADVERTISED_PORT}
 : ${KAFKA_LOG_CLEANER}
@@ -17,6 +18,11 @@ fi
 
 if [[ -n ${KAFKA_ZOOKEEPER_CONNECT} ]]; then
   sed -e "s/^zookeeper.connect=.*/zookeeper.connect=${KAFKA_ZOOKEEPER_CONNECT}/" \
+    -i $KAFKA_CONFIG
+fi
+
+if [[ -n ${KAFKA_PORT} ]]; then
+  sed -e "s/^port=.*/port=${KAFKA_PORT}/" \
     -i $KAFKA_CONFIG
 fi
 
